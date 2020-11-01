@@ -107,7 +107,7 @@ figure('Name',str);
 
 for i = 1:3
     subplot(5, 3, i)
-    plot(time_vector, pos_des(i,:),'b',time_vector, pos(i,:),'r');
+    plot(time_vector, pos_des(i,:),'b',time_vector, pos(i,:),'r--');
     grid on
     xlabel('time [s]')
     ylabel(labels{i})
@@ -121,7 +121,7 @@ title_name = {'Orientation in \phi','Orientation in \theta','Orientation in \psi
 
 for i = 1:3
     subplot(5, 3, i+3)
-    plot(time_vector, rpy_des(i,:), 'b', time_vector, rpy(i,:), 'r');
+    plot(time_vector, rpy_des(i,:), 'b', time_vector, rpy(i,:), 'r--');
     grid on
     xlabel('time [s]')
     ylabel(labels{i})
@@ -136,7 +136,7 @@ title_name = {'Velocity in x','Velocity in y','Velocity in z'};
 
 for i = 1:3
     subplot(5, 3, i+6)
-    plot(time_vector, vel_des(i,:), 'b', time_vector, vel(i,:), 'r');
+    plot(time_vector, vel_des(i,:), 'b', time_vector, vel(i,:), 'r--');
     grid on
     xlabel('time [s]')
     ylabel(labels{i})
@@ -150,7 +150,7 @@ title_name = {'Angular Velocity in x','Angular Velocity in y','Angular Velocity 
 
 for i = 1:3
     subplot(5, 3, i+9)
-    plot(time_vector, ang_vel_des(i,:),'b',time_vector, ang_vel(i,:),'r');
+    plot(time_vector, ang_vel_des(i,:),'b',time_vector, ang_vel(i,:),'r--');
     grid on
     xlabel('time [s]')
     ylabel(labels{i})
@@ -164,7 +164,7 @@ title_name = {'Acceleration in x','Acceleration in y','Acceleration in z'};
 
 for i = 1:3
     subplot(5, 3, i+12)
-    plot(time_vector,acc_des(i,:),'b',time_vector,acc(i,:),'r');
+    plot(time_vector,acc_des(i,:),'b',time_vector,acc(i,:),'r--');
     grid on
     xlabel('time [s]')
     ylabel(labels{i})

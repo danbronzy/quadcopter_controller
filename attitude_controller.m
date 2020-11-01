@@ -10,7 +10,7 @@ function [M] = attitude_controller(state,desired_state,params,question)
 %   current_state.rpm = [w1; w2; w3; w4];
 %
 %   desired_state: The desired states are:
-%   desired_state.pos = [x; y; z], 
+%   desired_state.pos = [x; y; z], steam
 %   desired_state.vel = [x_dot; y_dot; z_dot],
 %   desired_state.rot = [phi; theta; psi], 
 %   desired_state.omega = [phidot; thetadot; psidot]
@@ -19,7 +19,7 @@ function [M] = attitude_controller(state,desired_state,params,question)
 %   params: Quadcopter parameters
 %
 %   question: Question number
-%
+% 
 % Output parameters
 %
 %   M: u2 or moment [M1; M2; M3]
@@ -36,7 +36,13 @@ Kdtheta = 30;
 Kppsi = 80;
 Kdpsi = 17.88;
 
-% Write code here
+K_p = [Kpphi; Kptheta; Kppsi];
+K_d = [Kdphi; Kdtheta; Kdpsi];
 
+e_rot = state.rot - desired_state.rot;
+e_omega = state.omega - desired_state.omega;
+
+
+M = params.inertia * (-K_p .* e_rot - K_d .* e_omega);
 end
 

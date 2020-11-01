@@ -18,8 +18,20 @@ function [rot, omega] = attitude_planner(desired_state, params)
 %   omega: will be stored as desired_state.omega = [phidot; thetadot; psidot]
 %
 %************  ATTITUDE PLANNER ************************
+rot = zeros(3,1);
 
-% Write code here
+% capture from trajectory planner
+psi_d = desired_state.rot(3);
+rot(3) = psi_d;
 
+% caluclate phi_d and theta_d
+rot(1:2) = 1/params.gravity * [sin(psi_d), -cos(psi_d); cos(psi_d), sin(psi_d)] * desired_state.acc(1:2);
+
+%Use new desired valuest to calculate omega
+omegaCo = [cos(rot(2)), 0, -cos(rot(1)) * sin(rot(2));
+           0, 1, sin(rot(1));
+           sin(rot(1)), 0, cos(rot(1)) * cos(rot(2))];
+
+omega = omegaCo * desired_state.omega;
 end
 

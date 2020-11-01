@@ -38,6 +38,21 @@ Kd2 = 6.6;
 Kp3 = 20;
 Kd3 = 9;
 
-% Write code here
+K_p = [Kp1; Kp2; Kp3];
+K_d = [Kd1; Kd2; Kd3];
+
+% Calculate errors
+e_xyz = current_state.pos - desired_state.pos;
+ed_xyz = current_state.vel - desired_state.vel;
+edd_xyz = -K_p.*e_xyz - K_d.*ed_xyz;
+
+b = [0,0,1];
+
+% Calculate new desired accelerations with pd controller 
+acc = edd_xyz + desired_state.acc;
+
+% Calculate total thrust by taking the last term of this accel, with some
+% changes
+F = params.mass * b * (params.gravity + edd_xyz + acc);
 
 end

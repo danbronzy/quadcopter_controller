@@ -14,10 +14,18 @@
 % Version: this framework was made using MATLAB R2018b. Should function
 % as expected with most recent versions of MATLAB.
 
-function [] = main(question)
-
-clc
-close all;
+%I'm adding the state_waypoints as an optional input that makes working
+%with the state machine much easier. state_waypoints is an optional input
+%and still works as expected without the parameter, as is used with
+%questions 2 and 3. Required minimal changes to the function body.
+%
+% state_waypoints is a structure composed of:
+%   state_waypoints.waypoints = list of waypoints to visit
+%   state_waypoints.waypoint_times = times to visit waypoints at
+%   state_waypoints.currLoc = current location of the robot
+%   state_waypoints.showGraphs = bool whether to draw graphs for this
+%   section
+function finalLoc = main(question, state_waypoints)
 
 %% Set up quadrotor physical parameters
 
@@ -36,7 +44,12 @@ params = struct(...
 
 %% Get the waypoints for this specific question
 
-[waypoints, waypoint_times] = lookup_waypoints(question);
+if nargin == 1  %for use w/o state machine (i.e. questions 2 and 3)
+    [waypoints, waypoint_times] = lookup_waypoints(question);
+else %For idle->hover and hover->idle with statemachine
+    waypoints = state_waypoints.waypoints;
+    waypoint_times = state_waypoints.waypoint_times;
+end
 % waypoints are of the form [x, y, z, yaw]
 % waypoint_times are the seconds you should be at each respective waypoint,
 % make sure the simulation parameters below allow you to get to all points
@@ -44,7 +57,13 @@ params = struct(...
 %% Set the simualation parameters
 
 time_initial = 0; 
-time_final = 10;
+if nargin == 1
+    %base case with q 2 and 3
+    time_final = 10;
+else
+    %state machine
+    time_final = waypoint_times(end) + 1;
+end
 time_step = 0.005; % sec
 % 0.005 sec is a reasonable time step for this system
 
@@ -54,17 +73,23 @@ max_iter = length(time_vec);
 %% Create the state vector
 state = zeros(16,1);
 
-% Populate the state vector with the first waypoint (assumes that robot is
-% at the first waypoint at the initial time.
-state(1)  = waypoints(1,1); %x
-state(2)  = waypoints(2,1); %y
-state(3)  = waypoints(3,1); %z
+%For use with the state machine, the robot may not always be starting at
+%the place that the waypoints start. 
+if nargin == 1
+    currLoc = waypoints(:,1);
+else
+    currLoc = state_waypoints.currLoc;
+end
+
+state(1)  = currLoc(1); %x
+state(2)  = currLoc(2); %y
+state(3)  = currLoc(3); %z
 state(4)  =  0;        %xdot
 state(5)  =  0;        %ydot
 state(6)  =  0;        %zdot
 state(7) =   0;         %phi
 state(8) =   0;         %theta
-state(9) =   waypoints(4,1); %psi
+state(9) =   currLoc(4); %psi
 state(10) =  0;         %phidot 
 state(11) =  0;         %thetadot
 state(12) =  0;         %psidot
@@ -117,14 +142,14 @@ for iter = 1:max_iter-1
 
     % Motor model
     [F_actual, M_actual, rpm_motor_dot] = motor_model(F, M, current_state.rpm, params);
-    
+
     % Get the change in state from the quadrotor dynamics
     timeint = time_vec(iter:iter+1);
     [tsave, xsave] = ode45(@(t,s) dynamics(params, s, F_actual, M_actual, rpm_motor_dot), timeint, state);
     state    = xsave(end, :)';
     acc  = (xsave(end,4:6)' - xsave(end-1,4:6)')/(tsave(end) - tsave(end-1));
 
-    % Update desired state matrix
+    % Update desired state matrixW
     actual_desired_state_matrix(1:3,iter+1) =  desired_state.pos;
     actual_desired_state_matrix(4:6, iter+1) = desired_state.vel;
     actual_desired_state_matrix(7:9, iter+1) = desired_state.rot;
@@ -136,7 +161,17 @@ for iter = 1:max_iter-1
     actual_state_matrix(13:15, iter+1) = acc;  
 end
 
-plot_quadrotor_errors(actual_state_matrix, actual_desired_state_matrix, time_vec)
+
+if nargin == 1
+    plot_quadrotor_errors(actual_state_matrix, actual_desired_state_matrix, time_vec)
+elseif state_waypoints.showGraphs
+    plot_quadrotor_errors(actual_state_matrix, actual_desired_state_matrix, time_vec)
+end
+
+last = actual_state_matrix(:,end);
+
+%assuming stability, need this for state machine
+finalLoc = last([1:3,9]);%x,y,z,psi
 
 end
 
