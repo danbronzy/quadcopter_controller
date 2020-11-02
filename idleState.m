@@ -22,7 +22,7 @@ classdef idleState < abstractState
         %Executing the idleState does nothing
         %@params obj: class instance
         function nextState = execute(obj)
-            %Executing idle does nothing
+            %Executing idle does nothinghoverState
             fprintf("\tIdling (does nothing)\n")
             nextState = obj;
         end

@@ -25,7 +25,7 @@ trajectory_state = zeros(15,max_iter);
 %We are going to do this with a 5th order time parameterized polonomial
 %trajectory
 timeVec = 0:time_step:(max_iter - 1)*time_step;
-[q, qd, qdd, pp] = quinticpolytraj(waypoints, waypoint_times, timeVec);
+[q, qd, qdd, ~] = quinticpolytraj(waypoints, waypoint_times, timeVec);
 
 % plot trajectory in 3D
 % scatter3(q(1,:), q(2,:), q(3,:))
@@ -45,16 +45,3 @@ trajectory_state(12,:) = qd(4,:);
 
 
 end
-
-% current_waypoint_number = 1;
-% for iter = 1:max_iter
-%     if (current_waypoint_number<length(waypoint_times))
-%         if((iter*time_step)>waypoint_times(current_waypoint_number+1))
-%             current_waypoint_number = current_waypoint_number + 1;
-%         end
-%     end
-%         
-%     trajectory_state(1:3,iter) = waypoints(1:3,current_waypoint_number);
-%     trajectory_state(9,iter) = waypoints(4,current_waypoint_number);
-%     
-% end

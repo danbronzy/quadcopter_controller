@@ -11,11 +11,11 @@ function auto_state_manager(questionNumber)
     fprintf("Executing state tracking for question %i\n", questionNumber)
     
     %start at idle  on the ground under the first waypoint
-    strt = idleState([0;0;0;0]);
-    strt = strt.execute();%execute idle (does nothing)
+    idle1 = idleState([0;0;0;0]);
+    idle1 = idle1.execute();%execute idle (does nothing)
     
     %takeoff to hover at the height of 0.5
-    hov1 = strt.takeoff(0.5);
+    hov1 = idle1.takeoff(1.1);
     hov1 = hov1.execute();%hovers for 5 seconds in place
     
     %Tracking a set of waypoints
@@ -26,9 +26,9 @@ function auto_state_manager(questionNumber)
     hov2 = hov2.execute();
     
     %land to idle and turnoff
-    fin = hov2.land();
-    fin = fin.execute();%does nothing
-    done = fin.turn_off();
+    idle2 = hov2.land();
+    idle2 = idle2.execute();%does nothing
+    done = idle2.turn_off();
     done.execute();% does nothing
     
 end

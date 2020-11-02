@@ -29,6 +29,9 @@ elseif question == 3
 elseif question == 5.1
     waypoints = [0 0; 0 0; .1 .1; 0 0];
     waypoint_times = [0,5];
+elseif question == 5.2
+    waypoints = [0 0; 0 0; .1 .1; deg2rad(15) deg2rad(15)];
+    waypoint_times = [0,5];
 elseif question == 8
     waypoints = [[0, 0, 1, 0], [2, 1, 1, 0], [0, 2, 1, 0], [-2, 1, 1, 0]];
     waypoint_times = [0,2,4,6];

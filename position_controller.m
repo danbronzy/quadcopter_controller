@@ -28,15 +28,45 @@ function [F, acc] = position_controller(current_state, desired_state, params, qu
 %
 %************  POSITION CONTROLLER ************************
 
-% Example PD gains
-Kp1 = 17;
-Kd1 = 6.6;
+% Normal pd gains for question 2 and 3
+% Kp1 = 17;
+% Kd1 = 6.6;
+% 
+% Kp2 = 17;
+% Kd2 = 6.6;
+% 
+% Kp3 = 20;
+% Kd3 = 9;
 
-Kp2 = 17;
-Kd2 = 6.6;
+% modified bad params for question 2 and 3
+% Kp1 = 3;
+% Kd1 = 1;
+% 
+% Kp2 = 3;
+% Kd2 = 1;
+% 
+% Kp3 = 3;
+% Kd3 = 1;
 
-Kp3 = 20;
+% gain set 1 for question 5
+Kp1 = 20;
+Kd1 = 8;
+
+Kp2 = 20;
+Kd2 = 8;
+
+Kp3 = 18;
 Kd3 = 9;
+
+% gain set 2 for question 5
+% Kp1 = 20;
+% Kd1 = 8;
+% 
+% Kp2 = 20;
+% Kd2 = 8;
+% 
+% Kp3 = 10;
+% Kd3 = 19;
 
 K_p = [Kp1; Kp2; Kp3];
 K_d = [Kd1; Kd2; Kd3];

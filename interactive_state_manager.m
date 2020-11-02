@@ -10,7 +10,7 @@
 %   1. Prints the current state
 %   2. Prints the current orientation (x,y,z,psi)
 %   3. Prints the available transitions from this state
-%   4. Executes the states action
+%   4. Executes the state's action
 %   5. If the execution didn't change the state, then it waits for 
 %   user input on which transition to conduct
 %   6. Conducts the requested state transition
@@ -20,7 +20,7 @@
 %   currState.turn_off -> offState
 %   currState.takeoff(hoverHeight) -> hoverState
 %
-% Then a collection of valid inputs typed into the command window vervatim include:
+% Then a collection of valid inputs typed into the command window (verbatim) include:
 %   currState.turn_off
 %   currState.turn_off()
 %   currState.takeoff(3)
@@ -72,6 +72,14 @@ while (true)
     fprintf("\n****Executing the current state****\n");
     postExecuteState = currState.execute();
     
+    %Check if state execute() function changed the state. If it did, we
+    %need to restart the loop. Otherwise we are gonna take user input. If
+    %the new state is offState() then shut the process down. Ideally this
+    %would happen in offState.execute() but matlab doesnt allow that in a
+    %neat way.
+    %
+    %Regardless, we need to update the currState to that returned by
+    %execute() so that user input is acting on the correct state
     if ~strcmp(class(postExecuteState), class(currState))
         %This means execution caused a state change so dont take any
         %transition commands just yet, continue loop and spell out

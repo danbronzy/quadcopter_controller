@@ -114,6 +114,13 @@ actual_state_matrix(:,1) = vertcat(state(1:12), 0, 0, 0);
 % it will be updated by the controller
 actual_desired_state_matrix = zeros(15, max_iter);  
 
+%Adding this because the actual desired matrix is always zeros at the first
+%time step and never gets reset. Simply setting it to be the first value in
+%the waypoint matrix so my graphs don't have that annoying line at the
+%beginning
+actual_desired_state_matrix(1:3, 1) = waypoints(1:3, 1);
+actual_desired_state_matrix(9, 1) = waypoints(4,1);
+
 %% Loop through the timesteps and update quadrotor
 for iter = 1:max_iter-1
     
