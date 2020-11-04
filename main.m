@@ -27,6 +27,10 @@
 %   section
 function finalLoc = main(question, state_waypoints)
 
+if (question == 4 || question == 5)
+    error('Run the state-machine interactively with interactive_state_manager() or automatically with auto_state_manager(question)')
+end
+
 %% Set up quadrotor physical parameters
 
 params = struct(...

@@ -27,14 +27,14 @@ function [M] = attitude_controller(state,desired_state,params,question)
 %************  ATTITUDE CONTROLLER ************************
 
 % normal gains for question 2 and 3
-% Kpphi = 190;
-% Kdphi = 30;
-% 
-% Kptheta = 198;
-% Kdtheta = 30;
-% 
-% Kppsi = 80;
-% Kdpsi = 17.88;
+Kpphi = 190;
+Kdphi = 30;
+
+Kptheta = 198;
+Kdtheta = 30;
+
+Kppsi = 80;
+Kdpsi = 17.88;
 
 % modified bad gains for 2 and 3
 % Kpphi = 85;
@@ -47,14 +47,14 @@ function [M] = attitude_controller(state,desired_state,params,question)
 % Kdpsi = 4;
 
 % gain set 1 for question 5
-Kpphi = 190;
-Kdphi = 30;
-
-Kptheta = 190;
-Kdtheta = 30;
-
-Kppsi = 70;
-Kdpsi = 18;
+% Kpphi = 190;
+% Kdphi = 30;
+% 
+% Kptheta = 190;
+% Kdtheta = 30;
+% 
+% Kppsi = 70;
+% Kdpsi = 18;
 
 % gain set 2 for question 5
 % Kpphi = 190;
